@@ -1,0 +1,17 @@
+<h1>Teams</h1>
+
+<ul>
+  <% @teams.each do |team| %>
+    <li> <%= team.name %> </li>
+    <li>
+        <%= team.manager %>
+    </li>
+    <li>
+        <%= team.wins %>
+        <%= team.losses %>
+        <%= team.draws %>
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to "New Team", new_team_path %>

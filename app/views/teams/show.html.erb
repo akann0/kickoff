@@ -1,0 +1,15 @@
+<%= stylesheet_link_tag 'teams_show.css' %>
+
+<h1><%= @team.name %></h1>
+<p><%= @team.manager %></p>
+<ul>
+  <li><%= link_to "Edit", edit_team_path(@team) %></li>
+  <li><%= link_to "Destroy", team_path(@team), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %></li>
+</ul>
+
+
+<h2>List of Teams:</h2>
+<%= render "tlist" %> 
