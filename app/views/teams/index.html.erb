@@ -1,17 +1,35 @@
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Prompt">
+<style>
+body {
+  font-family: "Prompt", sans-serif;
+}
+</style>
+</head>
+
 <h1>Teams</h1>
 
-<ul>
-  <% @teams.each do |team| %>
-    <li> <%= team.name %> </li>
-    <li>
+<table class='table'>
+  <tr>
+    <th>Name</th>
+    <th>Manager</th>
+    <th>Record</th>
+  </tr>
+  <!-- teams in order by name -->
+  <% @teams.sort_by(&:name).each do |team| %>
+    <tr>
+    <td class='name'> 
+        <%= link_to team.name, team %>
+    </td>
+    <td class='manager'>
         <%= team.manager %>
-    </li>
-    <li>
-        <%= team.wins %>
-        <%= team.losses %>
+    </td>
+    <td class='record'>
+        <%= team.wins %> - 
+        <%= team.losses %> - 
         <%= team.draws %>
-    </li>
+    </td>
   <% end %>
-</ul>
+</table>
 
 <%= link_to "New Team", new_team_path %>

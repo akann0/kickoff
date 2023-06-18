@@ -1,0 +1,25 @@
+<h1>Edit Article</h1>
+
+<%= form_with model: @team do |form| %>
+    <div>
+      <%= form.label :name %><br>
+      <%= form.text_field :name %>
+      <% @team.errors.full_messages_for(:name).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+
+    <div><%= @team.id %></div>
+
+    <div>
+      <%= form.label :manager %><br>
+      <%= form.text_field :manager %>
+      <% @team.errors.full_messages_for(:manager).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+
+    <div>
+      <%= form.submit %>
+    </div>
+    <% end %>

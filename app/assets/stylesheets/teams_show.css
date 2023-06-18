@@ -1,0 +1,14 @@
+* {
+    background-color: darkslategrey;
+    color: white
+}
+
+h1 {
+    text-align: center;
+}
+
+td {
+    padding: 10px;
+    padding-right: 72px;
+    background-color: darkslategrey;
+}

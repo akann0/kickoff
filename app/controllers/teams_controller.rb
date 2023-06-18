@@ -13,6 +13,14 @@ class TeamsController < ApplicationController
 
   def create
     @team = Team.new(team_params)
+    @team.wins = 0
+    @team.losses = 0
+    @team.draws = 0
+    if Team.last == nil
+      @team.id = 1
+    else
+      @team.id = Team.last.id + 1
+    end
 
     if @team.save
       redirect_to @team

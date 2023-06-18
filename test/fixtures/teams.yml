@@ -2,14 +2,14 @@
 
 one:
   manager: MyString
-  id: 1
+  name: MyString
   wins: 1
   losses: 1
   draws: 1
 
 two:
   manager: MyString
-  id: 1
+  name: MyString
   wins: 1
   losses: 1
   draws: 1

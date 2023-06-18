@@ -27,7 +27,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_002109) do
     t.index ["article_id"], name: "index_comments_on_article_id"
   end
 
-  create_table "teams", id: false, force: :cascade do |t|
+  create_table "teams", force: :cascade do |t|
     t.string "manager"
     t.string "name"
     t.integer "wins"
