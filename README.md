@@ -1,24 +1,15 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Ever wanted to play a fantasy soccer app that didn't exclude a portion of significant 
+players?  This web app is for you.
 
-Things you may want to cover:
+Deployment TBD (as it doesn't seem that pages will host)
 
 * Ruby version
+    ruby version 3.2.2
 
 * System dependencies
-
-* Configuration
-
+    either use of selenium internally or an API call to retrieve player data(TBD)
+  
 * Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+    Database is run through SQLite
