@@ -8,7 +8,19 @@ Rails.application.routes.draw do
     resources :comments
   end
 
-  resources :teams
+  resources :teams do
+    resources :players
+  end
+
+  resources :players do
+    resources :gamelogs
+  end
+
+  resources :irlleagues
+
+  resources :irlgames do
+    resources :gamelogs
+  end
 
   # Defines the root path route ("/")
   # root "articles#index"

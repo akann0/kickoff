@@ -1,0 +1,12 @@
+<%= stylesheet_link_tag 'articles_show.css' %>
+
+<h1><%= @irlgame.home %></h1>
+<h1><%= @irlgame.away %></h1>
+
+<table>
+    <th>Players</th>
+    <th>Goals</th>
+    <th>Assists</th>
+    <th>Fantasy Points</th>
+    <%= render @irlgame.gamelogs %>
+</table>

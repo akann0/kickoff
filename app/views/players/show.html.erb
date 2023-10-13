@@ -1,0 +1,14 @@
+<h1><%= @player.name %></h1>
+<h3><%= link_to @player.team.name, @player.team %></h3>
+<p><%= @player.position %></p>
+<p><%= @player.sofaid %></p>
+
+<table>
+    <th>Game</th>
+    <th>Opponent</th>
+    <th>Result</th>
+    <th>Goals</th>
+    <th>Assists</th>
+    # i need to render the gamelogs here but the _pgamelogs
+    <%= render @player.gamelogs %>
+</table>

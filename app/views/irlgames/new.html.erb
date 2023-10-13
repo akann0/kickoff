@@ -1,0 +1,15 @@
+<h1> Import Stats From a Game </h1>
+
+<%= form_with model: @irlgame do |form| %>
+    <div>
+      <p>Game Link</p>
+      <%= form.text_field :url %>
+      <% @irlgame.errors.full_messages_for(:url).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+
+    <div>
+      <%= form.submit %>
+    </div>
+  <% end %>

@@ -1,0 +1,23 @@
+<h1> You shoud not be here! </h1>
+
+<%= form_with model: @irlleague do |form| %>
+    <div>
+      <p>League Name</p>
+      <%= form.text_field :name %>
+      <% @irlleague.errors.full_messages_for(:name).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+
+    <div>
+    <p>League Sofascore URL</p>
+    <%= form.text_field :url %>
+    <% @irlleague.errors.full_messages_for(:url).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+    </div>
+
+    <div>
+      <%= form.submit %>
+    </div>
+  <% end %>

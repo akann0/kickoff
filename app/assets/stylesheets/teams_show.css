@@ -12,3 +12,10 @@ td {
     padding-right: 72px;
     background-color: darkslategrey;
 }
+
+td, th, table {
+    border-style: solid;
+    border-width: 1px;
+    border-collapse: collapse;
+    border-color: #39FF14;
+}

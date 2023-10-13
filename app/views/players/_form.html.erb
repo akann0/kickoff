@@ -1,0 +1,21 @@
+<%= form_with model: player do |form| %>
+    <div>
+      <p>Player Name</p>
+      <%= form.text_field :name %>
+      <% player.errors.full_messages_for(:name).each do |message| %>
+        <div><%= message %></div>
+      <% end %>
+    </div>
+
+    <div>
+    <p>Player Sofascore Id</p>
+    <%= form.text_field :sofaid %>
+    <% player.errors.full_messages_for(:sofaid).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+    </div>
+
+    <div>
+      <%= form.submit %>
+    </div>
+  <% end %>
