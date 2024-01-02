@@ -7,24 +7,48 @@ require "i18n"
 
 module IrlgamesHelper
     def get_stats (url, id)
+        @irlgame = Irlgame.find(id)
         final_score_class = "lgCNjw"
+        team_names_class = "ewXNuL"
         player_stats_categories_buttons_class = "eCGFOL"
         player_stats_button_class = "LYUxR"
-        player_stats_table_class = "cJMEaR"
+        player_stats_table_class = "eelAoB"
         ss_rating_header = "Sofascore rating"
         
         p "gettin game stats"
         # open the website
         driver = Selenium::WebDriver.for :chrome
-        driver.navigate.to url
+        # i need to let the code run after a certain point even if the website is not fully loaded
+        driver.manage.timeouts.implicit_wait = 12
+        driver.manage.timeouts.page_load = 12
+        
+
+        #try loop
+        begin
+            driver.get url
+        rescue
+            puts "rescued"
+        end
+        p "opened website"
     
+        # the goal is to find the two teams who are playing in this game
+        possibly = driver.find_elements(:class, team_names_class)
+        # if (possibly.length > 1)
+        #     puts possibly.length, "MULTIPLE THINGS THAT COULD BE THE TEAMS"
+        # end
+        # puts "possibly", possibly[0].text.split("-")[0][0..-2], possibly[0].text.split("-")[1][1..-1]
+        @irlgame.home = possibly[0].text.split("-")[0][0..-2]
+        @irlgame.away = possibly[0].text.split("-")[1][1..-1]
+
+
         # the goal is to find the final score
         possibly = driver.find_elements(:class, final_score_class)
-        if (possibly.length > 1)
-            puts possibly.length, "MULTIPLE THINGS THAT COULD BE THE FINAL SCORE"
-        end
-        home_score = possibly[0].text.split(" ")[0]
-        away_score = possibly[0].text.split(" ")[2]
+        # if (possibly.length > 1)
+        #     puts possibly.length, "MULTIPLE THINGS THAT COULD BE THE FINAL SCORE"
+        # end
+        @irlgame.home_score = possibly[0].text.split(" ")[0]
+        @irlgame.away_score = possibly[0].text.split(" ")[2]
+
 
         possibly = driver.find_elements(:class, player_stats_button_class)
         # puts "possibly player statistics length", possibly.length
@@ -47,13 +71,22 @@ module IrlgamesHelper
         while table_array.length >= table_headers.length + i
             partial_gamelog = Hash.new
             for header in table_headers
-                partial_gamelog[header] = table_array[i]
+                partial_gamelog["team"] = @irlgame.away
+                if header == "+"
+                    #transliterate names so that they don't have accents
+                    partial_gamelog["+"] = I18n.transliterate(table_array[i])
+                else
+                    partial_gamelog[header] = table_array[i]
+                end
                 i += 1
             end
             gamelogs[partial_gamelog["+"]] = [partial_gamelog]
         end
 
-        puts "gamelogs", gamelogs
+        #click the button that shows only the home team players
+        possibly = driver.find_elements(:class, player_stats_button_class)
+
+        puts "gamelogs one", gamelogs
         # now, iterate through the table_array
 
         # now, the goal is to iterate through all the buttons that show different stats
@@ -86,19 +119,22 @@ module IrlgamesHelper
                     i += 1
                 end
                 #add to a list inside the hash
-                # puts "pg+: " + partial_gamelog["+"] + "."
-                # puts gamelogs[partial_gamelog["+"]]
-                gamelogs[I18n.transliterate(partial_gamelog["+"])] << partial_gamelog
+                # puts gamelogs
+                puts I18n.transliterate(partial_gamelog["+"])
+                # puts "b"
+                puts "if this is empty, we somehow messed up", gamelogs[I18n.transliterate(partial_gamelog["+"])]
+                # append partial gamelog to the list gamelogs[I18n.transliterate(partial_gamelog["+"])]
+                gamelogs[I18n.transliterate(partial_gamelog["+"])].append(partial_gamelog)
             end
             # puts cat + ": gamelogs", gamelogs
         end
 
-        # puts "gamelogs", gamelogs
+        puts "gamelogs pt 2", gamelogs
 
-        #"Nick Pope"=>[{"+"=>"Nick Pope", "Goals"=>"0", "Assists"=>"0", "Tackles"=>"0", "Acc. passes"=>"18/23 (78%)", "Duels (won)"=>"0 (0)", "Ground duels (won)"=>"0 (0)", "Aerial duels (won)"=>"0 (0)", "Minutes played"=>"90'", "Position"=>"G", "Average Sofascore rating"=>"6.0"}, 
+        #"Nick Pope"=>[{"+"=>"Nick Pope", "Goals"=>"0", "Assists"=>"0", "Tackles"=>"0", "Accurate passes"=>"18/23 (78%)", "Duels (won)"=>"0 (0)", "Ground duels (won)"=>"0 (0)", "Aerial duels (won)"=>"0 (0)", "Minutes played"=>"90'", "Position"=>"G", "Average Sofascore rating"=>"6.0"}, 
         # {"+"=>"Nick Pope^", "Shots on target"=>"0", "Shots off target"=>"0", "Shots blocked"=>"0", "Dribble attempts (succ.)"=>"0 (0)", "Notes"=>"-", "Position"=>"G", "Average Sofascore rating"=>"6.0"}, 
         # {"+"=>"Nick Pope^", "Clearances"=>"1", "Blocked shots"=>"0", "Interceptions"=>"0", "Tackles"=>"0", "Dribbled past"=>"0", "Notes"=>"Error led to goal: 1", "Position"=>"G", "Average Sofascore rating"=>"6.0"}, 
-        # {"+"=>"Nick Pope^", "Touches"=>"34", "Acc. passes"=>"18/23 (78%)", "Key passes"=>"0", "Crosses (acc.)"=>"0 (0)", "Long balls (acc.)"=>"8 (3)", "Notes"=>"-", "Position"=>"G", "Average Sofascore rating"=>"6.0"}, 
+        # {"+"=>"Nick Pope^", "Touches"=>"34", "Accurate passes"=>"18/23 (78%)", "Key passes"=>"0", "Crosses (acc.)"=>"0 (0)", "Long balls (acc.)"=>"8 (3)", "Notes"=>"-", "Position"=>"G", "Average Sofascore rating"=>"6.0"}, 
         # {"+"=>"Nick Pope^", "Ground duels (won)"=>"0 (0)", "Aerial duels (won)"=>"0 (0)", "Possession lost"=>"5", "Fouls"=>"0", "Was fouled"=>"0", "Offsides"=>"0", "Position"=>"G", "Average Sofascore rating"=>"6.0"}, 
         # {"+"=>"Nick Pope^", "Saves"=>"4", "Goals prevented"=>"-1.26", "Punches"=>"0", "Runs out (succ.)"=>"2 (2)", "High claims"=>"0", "Notes"=>"Saves from inside box: 2;Error led to goal: 1", "Average Sofascore rating"=>"6.0"}]}
         # NOTE that the key and the element + are not the same as + may have accent marks, as denoted by the ^
@@ -132,8 +168,8 @@ module IrlgamesHelper
             @gamelog.dribbles_attempted = gamelogs[player][1]["Dribble attempts (succ.)"].split(" ")[0]
 
             #PASSING STATS
-            @gamelog.passes_attempted = gamelogs[player][3]["Acc. passes"].split(" ")[0].split("/")[1]
-            @gamelog.passes_completed = gamelogs[player][3]["Acc. passes"].split(" ")[0].split("/")[0]
+            @gamelog.passes_attempted = gamelogs[player][3]["Accurate passes"].split(" ")[0].split("/")[1]
+            @gamelog.passes_completed = gamelogs[player][3]["Accurate passes"].split(" ")[0].split("/")[0]
             @gamelog.key_passes = gamelogs[player][3]["Key passes"]
             @gamelog.crosses = gamelogs[player][3]["Crosses (acc.)"].split(")")[0].split("(")[1]
             @gamelog.crosses_attempted = gamelogs[player][3]["Crosses (acc.)"].split(" ")[0]
@@ -192,6 +228,7 @@ module IrlgamesHelper
                     puts "ERROR", message
                 end
             end
+            @irlgame.save
         end
         # close the website
         driver.quit

@@ -75,6 +75,6 @@ include IrlgamesHelper
 
     private
     def irlgame_params
-        params.require(:irlgame).permit(:home, :away, :status, :gamestart, :url)
+        params.require(:irlgame).permit(:home, :away, :home_score, :away_score, status, :gamestart, :url)
     end
 end

@@ -4,11 +4,15 @@
 <p><%= @player.sofaid %></p>
 
 <table>
-    <th>Game</th>
-    <th>Opponent</th>
+    <th>Home Team</th>
+    <th>Away Team</th>
     <th>Result</th>
     <th>Goals</th>
     <th>Assists</th>
-    # i need to render the gamelogs here but the _pgamelogs
-    <%= render @player.gamelogs %>
+
+    <% @player.gamelogs.each do |gamelog| %>
+        <%= render partial: 'gamelogs/pgamelog', locals: { gamelog: gamelog } %>
+    <% end %>
+
+
 </table>

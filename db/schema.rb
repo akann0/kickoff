@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_10_035656) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_15_232003) do
   create_table "articles", force: :cascade do |t|
     t.string "title"
     t.text "body"
@@ -78,6 +78,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_10_035656) do
     t.datetime "updated_at", null: false
     t.datetime "gamestart"
     t.string "url"
+    t.integer "home_score"
+    t.integer "away_score"
     t.index ["irlleague_id"], name: "index_irlgames_on_irlleague_id"
   end
 

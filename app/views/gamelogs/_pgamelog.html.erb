@@ -1,17 +1,17 @@
 <tr>
     <td>
-        "Opponent"
+        <%= link_to gamelog.irlgame.home, gamelog.irlgame %>
     </td>
     <td>
-        "Date"
+        <%= gamelog.irlgame.away %>
+    </td>
+    <td>
+        <%= gamelog.irlgame.home_score %> - <%= gamelog.irlgame.away_score %>
     </td>
     <td>
         <%= gamelog.goals %>
     </td>
     <td>
         <%= gamelog.assists %>
-    </td>
-    <td>
-        <%= gamelog.fpoints %>
     </td>
 </tr>
