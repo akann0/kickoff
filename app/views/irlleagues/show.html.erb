@@ -1,3 +1,13 @@
 <%= stylesheet_link_tag 'teams_show.css' %>
 
+<% @irlleague = Irlleague.find(params[:id]) %>
+
 <h1><%= @irlleague.name %></h1>
+
+<ul>
+    <% @irlleague.irlgames.each do |irlgame| %>
+        <li>
+            <%= irlgame.home %> <%= irlgame.home_score %> - <%= irlgame.away %> <%= irlgame.away_score %>
+        </li>
+    <% end %>
+</ul>

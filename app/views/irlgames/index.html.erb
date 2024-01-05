@@ -1,1 +1,15 @@
 <p>Irlgames</p>
+
+<table>
+    <th>Home</th>
+    <th>Away</th>
+    <th>Home Score</th>
+    <th>Away Score</th>
+    <th>League</th>
+    <th>Game Date</th>
+    <th>Game Time</th>
+
+    <% @irlgames.each do |irlgame| %> 
+        <%= render partial: 'irlgames/irlgame', locals: { irlgame: irlgame } %>
+    <% end %>
+</table>

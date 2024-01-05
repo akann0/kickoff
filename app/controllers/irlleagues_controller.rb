@@ -1,5 +1,6 @@
 require "selenium-webdriver"
 require_relative "../helpers/players_helper.rb"
+require_relative "../helpers/irlleagues_helper.rb"
 require "i18n"
 
 
@@ -38,7 +39,7 @@ class IrlleaguesController < ApplicationController
         @irlleague.players = []
         
         # get the teams
-        teams = get_team_urls(@irlleague.url)
+        teams = get_team_urls(@irlleague.id, @irlleague.url)
 
         player_urls = []
         for team in teams
@@ -54,12 +55,13 @@ class IrlleaguesController < ApplicationController
         params.require(:irlleague).permit(:name, :url)
     end
 
-    def get_team_urls (url)
+    def get_team_urls (id, url)
         standings_class = "eKizDL"
         hamburg = "https://www.sofascore.com/team/football/hamburger-sv/2676"
         # get the teams
         driver = Selenium::WebDriver.for :chrome
         driver.get url
+        get_games(id, driver)
         standings = driver.find_elements(:class, standings_class)
         p standings
         team_elements = standings[0].find_elements(:xpath, "//a")
@@ -79,6 +81,55 @@ class IrlleaguesController < ApplicationController
         driver.close
         p "teams", teams, teams.length
         return teams
+    end
+
+    def get_games(id, driver)
+        # get the games
+        previous_button_class = "dbpbvb"
+        games_class = "lhngCo"
+
+        game_urls = []
+
+        # click the previous button until it disappears
+        previous_button = driver.find_elements(:class, previous_button_class)
+        #bring back the previous code checking the elements in said class
+        p "previous button"
+        for button in previous_button
+            p button.text
+        end
+
+
+        while previous_button[0].text == "PREVIOUS"
+            p "clicking previous"
+            previous_button[0].click
+            previous_button = driver.find_elements(:class, previous_button_class)
+    
+            # pause for a half a second
+            sleep(rand(0.2..0.4))
+        end
+
+        next_button = previous_button[0]
+        
+        while next_button.text == "NEXT"
+            games = driver.find_elements(:class, games_class)
+            for game in games
+                game_urls.push(game.attribute("href"))
+            end
+            next_button.click
+            p "clicking next"
+            next_button = driver.find_elements(:class, previous_button_class)
+            for button in next_button
+                p button.text
+            end
+            if next_button.length == 1
+                break
+            else 
+                next_button = next_button[1]
+            end
+            # pause for a half a second
+            sleep(rand(0.2..0.4))
+        end
+        p "game urls", game_urls
     end
 
     # NOT USED
