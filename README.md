@@ -2,8 +2,8 @@
 
 ~~Ever wanted to play a fantasy soccer app that didn't exclude a portion of significant 
 players?  This web app is for you.~~
-a fantasy sports app for european soccer was the original vision but right now this is just being used
-as a web scraper to help inform my sports betting.  I might get to the second half if I have the time
+We've abandoned this as scraping data through Selenium and on this particular website was too complicated
+
 
 Deployment TBD (as it doesn't seem that GitHub Pages will host)
 
